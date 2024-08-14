@@ -78,6 +78,73 @@ You can verify the interface index numbers by running:
 route print
 ```
 
+
+
+
+Troubleshooting
+```
+C:\Windows\system32>route add 192.168.1.0 mask 255.255.255.0 192.168.1.1 metric 1
+The route addition failed: The object already exists.
+
+
+C:\Windows\system32>route change 0.0.0.0 mask 0.0.0.0 172.20.10.1 metric 20 if 16
+The route change failed: Element not found.
+
+
+C:\Windows\system32>route change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10 if 42
+The route change failed: Element not found.
+
+
+C:\Windows\system32>
+```
+
+
+
+It seems like you're trying to adjust the routing table to prioritize internal network traffic over internet traffic, but you encountered errors while attempting to change the routes.
+
+Here's how you can resolve these issues:
+
+### Step 1: Add a Route for the Internal Network
+
+Since the internal network route already exists, you don't need to add it again. Instead, you can verify it:
+
+```
+route print
+```
+
+Look for a route entry that matches `192.168.1.0` with a `mask 255.255.255.0`.
+
+### Step 2: Set the Metric for the Default Gateway
+
+To set the priority for internet traffic, you'll need to adjust the metric for the default gateway on both interfaces. The metric is a value that determines the priority of the route; a lower metric means a higher priority.
+
+#### Change the Metric for the Wi-Fi Interface
+
+```
+route change 0.0.0.0 mask 0.0.0.0 172.20.10.1 metric 20
+```
+
+#### Change the Metric for the Ethernet Interface
+
+```
+route change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10
+```
+
+### Step 3: Confirm the Changes
+
+After making these changes, you can confirm that the routing table has been updated correctly:
+
+```
+route print
+```
+
+### Troubleshooting Tips:
+
+- **Interface Number**: If the route change fails due to an incorrect interface, ensure you have the correct interface number. You can find the interface numbers by running `route print` and looking at the list of interfaces at the top.
+- **Administrative Privileges**: Ensure that you are running the Command Prompt with administrative privileges, as route changes require elevated permissions.
+
+If you continue to experience issues, please let me know!
+
 This command will display the list of all routes and their associated interfaces.
 
 By following these steps, your machine will prioritize accessing the internal network via Ethernet while still being able to access the internet through Wi-Fi.
