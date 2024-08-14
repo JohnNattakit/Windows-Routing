@@ -32,9 +32,7 @@ The internal network is accessed through the Ethernet adapter (192.168.1.0/24). 
 
 You can add a static route to your internal network with the following command:
 
-```
-cmd
-Copy code
+``` cmd
 route add 192.168.1.0 mask 255.255.255.0 192.168.1.1 metric 1
 ```
 
@@ -44,17 +42,13 @@ Windows uses metrics to determine the priority of routes. Lower metric values ha
 
 First, change the metric of the Wi-Fi route (internet):
 
-```
-cmd
-Copy code
+``` cmd
 route change 0.0.0.0 mask 0.0.0.0 172.20.10.1 metric 20 if 16
 ```
 
 Then, ensure the Ethernet route has a lower metric (e.g., 1):
 
-```
-cmd
-Copy code
+``` cmd
 route change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10 if 42
 ```
 
@@ -62,8 +56,8 @@ route change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10 if 42
 
 If you want these routes to persist after a reboot, you can add the `-p` flag to the `route add` commands:
 
-```
-cmdCopy coderoute -p add 192.168.1.0 mask 255.255.255.0 192.168.1.1 metric 1
+``` cmd
+route -p add 192.168.1.0 mask 255.255.255.0 192.168.1.1 metric 1
 route -p change 0.0.0.0 mask 0.0.0.0 172.20.10.1 metric 20 if 16
 route -p change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10 if 42
 ```
@@ -81,8 +75,6 @@ route -p change 0.0.0.0 mask 0.0.0.0 192.168.1.1 metric 10 if 42
 You can verify the interface index numbers by running:
 
 ```
-cmd
-Copy code
 route print
 ```
 
